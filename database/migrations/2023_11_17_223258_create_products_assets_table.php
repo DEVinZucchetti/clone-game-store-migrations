@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('products_assets', function (Blueprint $table) {
             $table->id();
+            $table->integer('product_id');
+            $table->string('name');
+            $table->string('url');
+            $table->enum('types_games_assets', ['MINIMUNS', 'RECOMMENDED']);
             $table->timestamps();
         });
     }
