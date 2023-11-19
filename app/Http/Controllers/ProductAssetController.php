@@ -7,37 +7,65 @@ use Illuminate\Http\Request;
 
 class ProductAssetController extends Controller
 {
-    public function index(){
-        $assets = Product_Asset::all();
-        return $assets;
+    public function index()
+    {
+        try {
+
+            $assets = Product_Asset::all();
+            return $assets;
+        } catch (\Exception $execption) {
+            return $this->response($execption->getMessage(), null, false, 500);
+        }
     }
     public function store(Request $request)
     {
+        try {
 
-        $data = $request->all();
+            $request->validate([
+                'name' => 'required|string|max:150'
+            ]);
 
-        $asset = Product_Asset::create($data);
-        return response($asset, 201);
+            $data = $request->all();
+
+            $asset = Product_Asset::create($data);
+            return response($asset, 201);
+        } catch (\Exception $execption) {
+            return $this->response($execption->getMessage(), null, false, 500);
+        }
     }
 
-    public function update($id, Request $request){
-        $asset = Product_Asset::find($id);
+    public function update($id, Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:150'
+            ]);
 
-        if(empty($asset)) {
-            return $this->response('Ativo não encontrado!', null, false, 404);
+            $asset = Product_Asset::find($id);
+
+            if (empty($asset)) {
+                return $this->response('Ativo não encontrado!', null, false, 404);
+            }
+            $asset->update($request->all());
+            $message = $asset->name . " atualizado com sucesso.";
+            return $this->response($message, $asset);
+        } catch (\Exception $execption) {
+            return $this->response($execption->getMessage(), null, false, 500);
         }
-        $asset->update($request->all());
-        $message = $asset->name." atualizado com sucesso.";
-        return $this->response($message, $asset);
     }
 
-    public function destroy($id, Request $request){
-        $asset = Product_Asset::find($id);
+    public function destroy($id)
+    {
+        try {
+            $asset = Product_Asset::find($id);
 
-        if(empty($asset)) {
-            return $this->response('Ativo não encontrado!', null, false, 404);
+            if (empty($asset)) {
+                return $this->response('Ativo não encontrado!', null, false, 404);
+            }
+            $asset = Product_Asset::destroy($id);
+            return $this->response("Ativo excluido com sucesso", null);
+        } catch (\Exception $execption) {
+            return $this->response($execption->getMessage(), null, false, 500);
         }
-        $asset= Product_Asset::destroy($id);
-        return $this->response("Ativo excluido com sucesso", null);
     }
 }
