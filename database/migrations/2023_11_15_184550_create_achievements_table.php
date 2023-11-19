@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('url');
-            $table->string('name',150)->unique();
-            $table->text('description');
+            $table->bigInteger('product_id');
+            $table->string('url');
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
+            //relaciona chave estrangeira
+            $table
+            ->foreign('product_id')
+            ->references('id')
+            ->on('products');
         });
     }
 

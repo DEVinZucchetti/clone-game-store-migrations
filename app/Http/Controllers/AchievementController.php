@@ -3,24 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Achievement;
+use Exception;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller
 {
-    public function index (){
-        return Achievement::all();
+    public function index(Request $request)
+    {
+        $product_id = $request->query('product_id');
+
+        $achievements = Achievement::query()
+            ->where('product_id', $product_id)
+            ->get();
+        return $achievements;
     }
 
-    public function store (Request $request){
-        $data = $request->all();
-        Achievement::create($data);
+    public function store(Request $request)
+    {
+
+        try {
+
+            $data = $request->all();
+            $request->validate([
+                'product_id' => 'integer|required',
+                'url' => 'string|required',
+                'name' => 'string | required'
+            ]);
+            $achievement = Achievement::create($data);
+            return $achievement;
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
     }
 
-    public function destroy ($id){
+    public function destroy($id){
         $achievement = Achievement::find($id);
-        if(!$achievement) return $this->response('Conquista não encontrada', null, false, 404);
+
+        if(!$achievement) return response()->json(['message' => 'Conquista não encontrada'], 404);
+
         $achievement->delete();
-        return $this->response('', null, true, 200);
+        return response('', 204);
     }
 
     public function show($id){
@@ -30,10 +52,25 @@ class AchievementController extends Controller
     }
 
     public function update($id, Request $request){
-        $data= $request->all();
-        $achievement = Achievement::find($id);
-        if(!$achievement) return $this->response('Pet não encontrado', null, false, 404);
-        $achievement->update($data);
-        return $achievement;
+        try {
+
+
+            $achievement = Achievement::find($id);
+
+            if(!$achievement) return response()->json(['message' => 'Categoria não encontrado'], 404);
+
+            $request->validate([
+                'product_id' => 'integer|required',
+                'url' => 'string|required',
+                'name' => 'string | required'
+            ]);
+
+            $achievement->update($request->all());
+
+            return $achievement;
+
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
     }
 }

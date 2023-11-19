@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Achievement extends Model
 {
     use HasFactory;
+    protected $fillable = ['product_id', 'url', 'name', 'description'];
+
+    protected $casts = [
+        'product_id' => 'float'
+    ];
 }
