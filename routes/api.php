@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\ProductAssetController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +18,13 @@ Route::post('achievement', [AchievementController::class, 'store']);
 Route::delete('achievement/{id}', [AchievementController::class, 'destroy']);
 Route::get('achievement/{id}', [AchievementController::class, 'show']);
 Route::put('achievement/{id}', [AchievementController::class, 'update']);
+
+
+Route::get('categorys', [CategoryController::class, 'index']);
+Route::post('categorys', [CategoryController::class, 'store']);
+Route::get('categorys/{id}', [CategoryController::class, 'show']);
+Route::delete('categorys/{id}', [CategoryController::class, 'destroy']);
+Route::put('categorys/{id}', [CategoryController::class, 'update']);
 
 Route::get('product_markers', [ProductMarkerController::class, 'index']);
 Route::post('product_markers', [ProductMarkerController::class, 'store']);
