@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('achievements', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('product_id');
+            $table->string('url');
             $table->string('name');
-            $table->string('cover')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->longText('description');
+            $table->string('description')->nullable();
             $table->timestamps();
+            //relaciona chave estrangeira
+            $table
+            ->foreign('product_id')
+            ->references('id')
+            ->on('products');
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('achievements');
     }
 };
