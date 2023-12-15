@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products_assets', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->BigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->string('name', 50);
-            $table->string('url');
-            $table->enum('types_games_assets', ['MINIMUNS', 'RECOMMENDED']);
+            $table->string('name', 150)->unique();
+            $table->decimal('price', 10,2)->default(0);
+            $table->text('description')->nullable();
+            $table->string('cover')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products_assets');
+        Schema::dropIfExists('products');
     }
 };

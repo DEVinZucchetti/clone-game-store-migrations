@@ -5,6 +5,7 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\ProductAssetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarkerController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductMarkerController;
 
 
@@ -34,3 +35,9 @@ Route::get('products_assets',[ProductAssetController::class,'index']);
 Route::post('products_assets',[ProductAssetController::class,'store']);
 Route::put('products_assets/{id}',[ProductAssetController::class,'update']);
 Route::delete('products_assets/{id}',[ProductAssetController::class,'destroy']);
+
+Route::get('products',[ProductController::class, 'index']);
+Route::post('products',[ProductController::class, 'store']);
+Route::get('products/{id}',[ProductController::class, 'show']);
+Route::put('products/{id}',[ProductController::class, 'update']);
+Route::delete('products/{id}',[ProductController::class, 'destroy']);
